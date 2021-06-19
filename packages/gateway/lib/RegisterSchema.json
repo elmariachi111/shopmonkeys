@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "route",
+    "target"
+  ],
+  "properties": {
+    "route": {
+      "type": "string"
+    },
+    "target": {
+      "type": "string",
+      "format": "uri"
+    }
+  }
+}

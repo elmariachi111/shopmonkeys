@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
+    "express-json-validator-middleware": "^2.1.1",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
@@ -15,5 +16,9 @@
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.3.2"
   },
-  "description": ""
+  "description": "",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "dev": "ts-node-dev index.ts"
+  }
 }
