@@ -1,0 +1,25 @@
+{
+  "name": "monkeys",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node-fetch": "^2.5.10",
+    "chai": "^4.3.4",
+    "faker": "^5.5.3",
+    "nanoid": "^3.1.23",
+    "node-fetch": "^2.6.1",
+    "ts-node": "^10.0.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/faker": "^5.5.6",
+    "ts-node-dev": "^1.1.6"
+  }
+}
