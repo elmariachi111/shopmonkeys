@@ -36,6 +36,7 @@ importers:
       express: 4.17.1
       express-json-validator-middleware: 2.1.1
       express-winston: 4.1.0_winston@3.3.3
+      http-proxy-middleware: 2.0.0
       node-fetch: 2.6.1
       winston: 3.3.3
     devDependencies:
@@ -50,6 +51,7 @@ importers:
       express: ^4.17.1
       express-json-validator-middleware: ^2.1.1
       express-winston: ^4.1.0
+      http-proxy-middleware: ^2.0.0
       node-fetch: ^2.6.1
       ts-node: ^10.0.0
       ts-node-dev: ^1.1.6
@@ -139,6 +141,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-UCRj0kLg4sXs2XFVm48OU/wIjyJZkpRkwxhRGVQb5l5GmemkeW22WTz9iiDhYPBUqTzDsIWzhFRuF/4DD5+q2Q==
+  /@types/http-proxy/1.17.6:
+    dependencies:
+      '@types/node': 15.12.4
+    dev: false
+    resolution:
+      integrity: sha512-+qsjqR75S/ib0ig0R9WN+CDoZeOBU6F2XLewgC4KVgdXiNHiKKHFEMRHOrs5PbYE97D5vataw5wPj4KLYfUkuQ==
   /@types/json-schema/7.0.7:
     dev: false
     resolution:
@@ -271,7 +279,6 @@ packages:
   /braces/3.0.2:
     dependencies:
       fill-range: 7.0.1
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -524,6 +531,10 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+  /eventemitter3/4.0.7:
+    dev: false
+    resolution:
+      integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
   /express-json-validator-middleware/2.1.1:
     dependencies:
       '@types/express': 4.17.12
@@ -605,7 +616,6 @@ packages:
   /fill-range/7.0.1:
     dependencies:
       to-regex-range: 5.0.1
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -637,6 +647,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
+  /follow-redirects/1.14.1:
+    dev: false
+    engines:
+      node: '>=4.0'
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    resolution:
+      integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==
   /form-data/3.0.1:
     dependencies:
       asynckit: 0.4.0
@@ -750,6 +771,28 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-ZTTX0MWrsQ2ZAhA1cejAwDLycFsd7I7nVtnkT3Ol0aqodaKW+0CTZDQ1uBv5whptCnc8e8HeRRJxRs0kmm/Qfw==
+  /http-proxy-middleware/2.0.0:
+    dependencies:
+      '@types/http-proxy': 1.17.6
+      http-proxy: 1.18.1
+      is-glob: 4.0.1
+      is-plain-obj: 3.0.0
+      micromatch: 4.0.4
+    dev: false
+    engines:
+      node: '>=12.0.0'
+    resolution:
+      integrity: sha512-S+RN5njuyvYV760aiVKnyuTXqUMcSIvYOsHA891DOVQyrdZOwaXtBHpt9FUVPEDAsOvsPArZp6VXQLs44yvkow==
+  /http-proxy/1.18.1:
+    dependencies:
+      eventemitter3: 4.0.7
+      follow-redirects: 1.14.1
+      requires-port: 1.0.0
+    dev: false
+    engines:
+      node: '>=8.0.0'
+    resolution:
+      integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==
   /iconv-lite/0.4.24:
     dependencies:
       safer-buffer: 2.1.2
@@ -809,7 +852,6 @@ packages:
     resolution:
       integrity: sha512-6A2fkfq1rfeQZjxrZJGerpLCTHRNEBiSgnu0+obeJpEPZRUooHgsizvzv0ZjJwOz3iWIHdJtVWJ/tmPr3D21/A==
   /is-extglob/2.1.1:
-    dev: true
     engines:
       node: '>=0.10.0'
     resolution:
@@ -823,17 +865,21 @@ packages:
   /is-glob/4.0.1:
     dependencies:
       is-extglob: 2.1.1
-    dev: true
     engines:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-5G0tKtBTFImOqDnLB2hG6Bp2qcKEFduo4tZu9MT/H6NQv/ghhy30o55ufafxJ/LdH79LLs2Kfrn85TLKyA7BUg==
   /is-number/7.0.0:
-    dev: true
     engines:
       node: '>=0.12.0'
     resolution:
       integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
+  /is-plain-obj/3.0.0:
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-gwsOE28k+23GP1B6vFl1oVh/WOzmawBrKwo5Ev6wMKzPkaXaCDIQKzLnvsA42DRlbVTWorkgTKIviAKCWkfUwA==
   /is-stream/2.0.0:
     dev: false
     engines:
@@ -933,6 +979,15 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
+  /micromatch/4.0.4:
+    dependencies:
+      braces: 3.0.2
+      picomatch: 2.3.0
+    dev: false
+    engines:
+      node: '>=8.6'
+    resolution:
+      integrity: sha512-pRmzw/XUcwXGpD9aI9q/0XOwLNygjETJ8y0ao0wdqprrzDa4YnxLcz7fQRZr8voh8V10kGhABbNcHVk5wHgWwg==
   /mime-db/1.48.0:
     engines:
       node: '>= 0.6'
@@ -1092,7 +1147,6 @@ packages:
     resolution:
       integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==
   /picomatch/2.3.0:
-    dev: true
     engines:
       node: '>=8.6'
     resolution:
@@ -1225,6 +1279,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-UhTFOpJtNVJwdSf7q0FdvAjQbdo=
+  /requires-port/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
   /resolve/1.20.0:
     dependencies:
       is-core-module: 2.4.0
@@ -1400,7 +1458,6 @@ packages:
   /to-regex-range/5.0.1:
     dependencies:
       is-number: 7.0.0
-    dev: true
     engines:
       node: '>=8.0'
     resolution:

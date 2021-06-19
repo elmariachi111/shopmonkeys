@@ -1,27 +1,33 @@
 import express, { NextFunction, Request, Response } from 'express'
-import { default as ProductRouter } from './lib/ProductRouter'
 import { Validator } from 'express-json-validator-middleware'
 import { JSONSchema7 } from 'json-schema'
 import RegisterSchema from './lib/RegisterSchema.json'
-const validator = new Validator({ allErrors: true })
-const validate = validator.validate
 import winston from 'winston'
 import expressWinston from 'express-winston'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 
+import { default as ProductRouter } from './lib/ProductRouter'
+
+const validator = new Validator({ allErrors: true })
+const validate = validator.validate
 const app = express()
 const port = 3000
 
 app.use(express.json())
 
+const logger = winston.createLogger({
+  transports: [new winston.transports.Console()],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    //winston.format.prettyPrint(),
+    winston.format.simple()
+    //winston.format.json()
+  ),
+})
+
 app.use(
   expressWinston.logger({
-    transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      //winston.format.prettyPrint(),
-      winston.format.simple()
-      //winston.format.json()
-    ),
+    winstonInstance: logger,
     meta: true, // optional: control whether you want to log the meta data about the request (default to true)
     msg: 'HTTP {{req.method}} {{req.url}}', // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"
     expressFormat: true, // Use the default Express/morgan request formatting. Enabling this will override any msg if true. Will only output colors with colorize set to true
@@ -38,8 +44,17 @@ app.post(
   }),
   (req, res) => {
     const { route, target } = req.body
-
-    res.json({ result: 'ok' })
+    app.use(
+      route,
+      createProxyMiddleware({
+        target,
+        changeOrigin: true,
+        logProvider: () => logger,
+      })
+    )
+    res.json({
+      [route]: target,
+    })
   }
 )
 
