@@ -1,6 +1,7 @@
 const {send} = require ('micro')
+const morgan = require('micro-morgan');
 
-const products = (req, res) => {
+const products = morgan('short')((req, res) => {
   send(res, 200, [
     {
         name: '1kg of hot air',
@@ -12,6 +13,6 @@ const products = (req, res) => {
         name: 'a crate of Fritz Mate'
     }
   ]);
-}
+})
 
 module.exports = products

@@ -84,11 +84,13 @@ importers:
   packages/product-service:
     dependencies:
       micro: 9.3.4
+      micro-morgan: 0.1.0
     devDependencies:
       micro-dev: 3.0.0_micro@9.3.4
     specifiers:
       micro: ^9.3.4
       micro-dev: ^3.0.0
+      micro-morgan: ^0.1.0
 lockfileVersion: 5.2
 packages:
   /@dabh/diagnostics/2.0.2:
@@ -347,6 +349,14 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg==
+  /basic-auth/2.0.1:
+    dependencies:
+      safe-buffer: 5.1.2
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
   /binary-extensions/1.13.1:
     dev: true
     engines:
@@ -818,6 +828,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+  /depd/2.0.0:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
   /destroy/1.0.4:
     dev: false
     resolution:
@@ -1875,6 +1891,12 @@ packages:
       micro: '>=9.0.0'
     resolution:
       integrity: sha512-hxI93KdT7Y8utmVn3NsXqMEKOQj0RpHiY1+PW8rtbiDyd3e/D6NN7OEdG8R0uSFI3GuJbkYN76Z2QTZafyfN/w==
+  /micro-morgan/0.1.0:
+    dependencies:
+      morgan: 1.10.0
+    dev: false
+    resolution:
+      integrity: sha512-NWKie25ys0UpvtvKxyOdiMryWOiDvsfzgkNvaM5Wdl/gJQHP4mdjQHuKF0RhAHxXxnEU0cpD4xW83yztX5+KTQ==
   /micro/9.3.4:
     dependencies:
       arg: 4.1.0
@@ -1967,6 +1989,18 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+  /morgan/1.10.0:
+    dependencies:
+      basic-auth: 2.0.1
+      debug: 2.6.9
+      depd: 2.0.0
+      on-finished: 2.3.0
+      on-headers: 1.0.2
+    dev: false
+    engines:
+      node: '>= 0.8.0'
+    resolution:
+      integrity: sha512-AbegBVI4sh6El+1gNwvD5YIck7nSA36weD7xvIxG4in80j/UoK8AEGaWnnz8v1GxonMCltmlNs5ZKbGvl9b1XQ==
   /mri/1.1.1:
     dev: true
     engines:
@@ -2113,6 +2147,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-IPEzZIGwg811M3mSoWlxqi2QaUc=
+  /on-headers/1.0.2:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
   /once/1.4.0:
     dependencies:
       wrappy: 1.0.2

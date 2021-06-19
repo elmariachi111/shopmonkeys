@@ -70,11 +70,6 @@ app.post(
   }
 )
 
-// app.use((req: Request, res: Response, next: NextFunction) => {
-//   logger.warn('MOOO')
-//   next()
-//})
-
 app.use(
   (
     err: Error & { validationErrors: any },

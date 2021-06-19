@@ -10,8 +10,15 @@ export class GetAllProducts extends Command {
   }
 
   async run() {
-    const allProductsResult = await fetch(`${API_GATEWAY}/products`)
-
+    const url = `${API_GATEWAY}/products`
+    const allProductsResult = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': this.monkey.getUserAgent(),
+      },
+    })
+    expect(allProductsResult.status).to.equal(200)
     const allProducts = await allProductsResult.json()
     expect(allProducts).to.be.an('array', 'expecting an array as a result')
     logger.info(`fetched [${allProducts.length}] products`, {
