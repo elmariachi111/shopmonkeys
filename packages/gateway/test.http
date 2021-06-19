@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "route": "/products",
-  "target": "https://localhost:3001"
+  "target": "http://localhost:3001"
 }
 
 ###
@@ -12,3 +12,9 @@ GET http://localhost:3000/products
 Content-Type: application/json
 
 {}
+
+###
+
+GET http://localhost:3001
+Content-Type: application/json
+

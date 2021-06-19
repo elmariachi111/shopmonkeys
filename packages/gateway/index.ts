@@ -50,6 +50,18 @@ app.post(
         target,
         changeOrigin: true,
         logProvider: () => logger,
+        onError: (
+          err: Error & {
+            code: string
+          },
+          req: Request,
+          res: Response
+        ) => {
+          res.status(503).json({
+            target,
+            error: err.code,
+          })
+        },
       })
     )
     res.json({
@@ -57,6 +69,11 @@ app.post(
     })
   }
 )
+
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//   logger.warn('MOOO')
+//   next()
+//})
 
 app.use(
   (
@@ -75,6 +92,7 @@ app.use(
         validationErrors: err.validationErrors, // All of your validation information
       })
     } else {
+      logger.warn('FOOOO')
       // pass error to next error middleware handler
       next(err)
     }
