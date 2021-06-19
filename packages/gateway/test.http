@@ -1,7 +1,7 @@
-POST http://localhost:3000/register
+POST http://localhost:3000/register?q=foo
 Content-Type: application/json
 
 {
   "route": "/products",
-  "target": "http://localhost:3001"
+  "target": "htp://localhost:3001"
 }
