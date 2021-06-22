@@ -1,9 +1,9 @@
-POST http://localhost:3000/register?q=foo
+POST http://localhost:3000/register
 Content-Type: application/json
 
 {
   "route": "/products",
-  "target": "http://localhost:3001"
+  "target": "https://faasd.coding.earth/function/products"
 }
 
 ###
@@ -11,7 +11,7 @@ Content-Type: application/json
 GET http://localhost:3000/products
 Content-Type: application/json
 
-{}
+#{}
 
 ###
 

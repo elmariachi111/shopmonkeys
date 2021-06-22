@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: https://faasd.coding.earth
+functions:
+  products:
+    lang: node14
+    handler: ./products
+    image: registry.coding.earth/products:latest
+

@@ -6,8 +6,6 @@ import winston from 'winston'
 import expressWinston from 'express-winston'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
-import { default as ProductRouter } from './lib/ProductRouter'
-
 const validator = new Validator({ allErrors: true })
 const validate = validator.validate
 const app = express()
