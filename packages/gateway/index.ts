@@ -6,6 +6,8 @@ import winston from 'winston'
 import expressWinston from 'express-winston'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
+import { init as DockerRouter } from './lib/DockerRouter'
+
 const validator = new Validator({ allErrors: true })
 const validate = validator.validate
 const app = express()
@@ -33,7 +35,7 @@ app.use(
   })
 )
 
-//app.use('products', ProductRouter)
+app.use('/docker', DockerRouter({ logger }))
 
 app.post(
   '/register',

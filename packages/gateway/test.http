@@ -11,10 +11,12 @@ Content-Type: application/json
 GET http://localhost:3000/products
 Content-Type: application/json
 
-#{}
+###
+GET http://localhost:3000/docker
 
 ###
+POST http://localhost:3000/docker
 
-GET http://localhost:3001
-Content-Type: application/json
 
+###
+DELETE http://localhost:3000/docker/

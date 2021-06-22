@@ -5,6 +5,7 @@
   "author": "Stefan Adolf",
   "license": "MIT",
   "dependencies": {
+    "dockerode": "^3.3.0",
     "express": "^4.17.1",
     "express-json-validator-middleware": "^2.1.1",
     "express-winston": "^4.1.0",
@@ -13,6 +14,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/dockerode": "^3.2.3",
     "@types/express": "^4.17.12",
     "@types/node-fetch": "^2.5.10",
     "ts-node": "^10.0.0",
