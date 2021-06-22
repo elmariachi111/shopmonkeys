@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: https://faasd.coding.earth
+functions:
+  somephp:
+    lang: php8
+    handler: ./somephp
+    image: registry.coding.earth/somephp:latest
+
