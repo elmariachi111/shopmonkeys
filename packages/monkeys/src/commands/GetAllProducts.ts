@@ -1,23 +1,11 @@
-import { API_GATEWAY, Command } from './Command'
-import { default as fetch } from 'node-fetch'
 import { expect } from 'chai'
-import { Monkey } from '../monkeys/Monkey'
 import { logger } from '../lib/Logger'
+import { Command } from './Command'
 
 export class GetAllProducts extends Command {
-  constructor(private monkey: Monkey) {
-    super()
-  }
+  async execute() {
+    const allProductsResult = await this.request('GET', '/products')
 
-  async run() {
-    const url = `${API_GATEWAY}/products`
-    const allProductsResult = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': this.monkey.getUserAgent(),
-      },
-    })
     expect(allProductsResult.status).to.equal(200)
     const allProducts = await allProductsResult.json()
     expect(allProducts).to.be.an('array', 'expecting an array as a result')

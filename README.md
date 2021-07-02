@@ -36,37 +36,6 @@ If you want, you can become a monkey yourself.
 
 https://docs.openfaas.com/
 
-### Setup pointers
+writing functions
 
-https://docs.docker.com/registry/
-
-https://docs.openfaas.com/deployment/faasd/
-https://docs.openfaas.com/cli
-
-https://ericstoekl.github.io/faas/operations/managing-images/#using-private-docker-registries
-
-```
-Running with sufficient permissions to attempt to move faas-cli to /usr/local/bin
-New version of faas-cli installed to /usr/local/bin
-Creating alias 'faas' for 'faas-cli'.
-  ___                   _____           ____
- / _ \ _ __   ___ _ __ |  ___|_ _  __ _/ ___|
-| | | | '_ \ / _ \ '_ \| |_ / _` |/ _` \___ \
-| |_| | |_) |  __/ | | |  _| (_| | (_| |___) |
- \___/| .__/ \___|_| |_|_|  \__,_|\__,_|____/
-      |_|
-
-CLI:
- commit:  72816d486cf76c3089b915dfb0b66b85cf096634
- version: 0.13.13
-2021/06/20 10:21:52 Writing to: "/var/lib/faasd/secrets/basic-auth-password"
-2021/06/20 10:21:52 Writing to: "/var/lib/faasd/secrets/basic-auth-user"
-Check status with:
-  sudo journalctl -u faasd --lines 100 -f
-
-Login with:
-  sudo cat /var/lib/faasd/secrets/basic-auth-password | faas-cli login -s
-Skipping caddy installation as FAASD_DOMAIN.
-
-
-```
+https://github.com/openfaas/workshop/blob/master/README.md
