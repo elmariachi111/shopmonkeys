@@ -98,6 +98,7 @@ importers:
       node-fetch: 2.6.1
       ts-node: 10.0.0
       winston: 3.3.3
+      winston-loki: 6.0.1
     devDependencies:
       '@types/chai': 4.2.18
       '@types/faker': 5.5.6
@@ -113,6 +114,7 @@ importers:
       ts-node: ^10.0.0
       ts-node-dev: ^1.1.6
       winston: ^3.3.3
+      winston-loki: ^6.0.1
   packages/template/node:
     dependencies:
       get-stdin: 5.0.1
@@ -269,10 +271,10 @@ packages:
   /@types/node/15.12.4:
     resolution:
       integrity: sha512-zrNj1+yqYF4WskCMOHwN+w9iuD12+dGm0rQ35HLl9/Ouuq52cEtd0CH9qMgrdNmi5ejC1/V7vKEXYubB+65DkA==
-  /@types/node/16.3.1:
+  /@types/node/16.3.2:
     dev: false
     resolution:
-      integrity: sha512-N87VuQi7HEeRJkhzovao/JviiqKjDKMVKxKMfUvSKw+MbkbW8R0nA3fi/MQhhlxV2fQ+2ReM+/Nt4efdrJx3zA==
+      integrity: sha512-jJs9ErFLP403I+hMLGnqDRWT0RYKSvArxuBVh2veudHV7ifEC1WAmjJADacZ7mRbA2nWgHtn8xyECMAot0SkAw==
   /@types/qs/6.9.6:
     resolution:
       integrity: sha512-0/HnwIfW4ki2D8L8c9GVcG5I72s9jP5GSLVF0VIXDW00kmIpA6O33G7a8n59Tmh7Nz0WUC3rSb7PTY/sdW2JzA==
@@ -1700,7 +1702,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.1
-      '@types/node': 16.3.1
+      '@types/node': 16.3.2
       long: 4.0.0
     dev: false
     hasBin: true

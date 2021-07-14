@@ -12,10 +12,6 @@ export class AddProduct extends Command {
     )
 
     expect(productCreatedResult.status).to.equal(201)
-    logger.info(`added product [${params.sku}]`, {
-      monkeyId: this.monkey.monkeyId,
-    })
-
-    return productCreatedResult
+    return await productCreatedResult.json()
   }
 }
