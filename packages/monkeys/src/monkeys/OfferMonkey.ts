@@ -11,7 +11,7 @@ export class OfferMonkey extends Monkey {
         title: faker.commerce.productName(),
         sku: faker.datatype.uuid(),
       }
-      await addProduct.execute(product)
+      const result = await addProduct.execute(product)
     } catch (e) {
       logger.error(e.message, { monkeyId: this.monkeyId })
     }

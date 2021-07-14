@@ -18,5 +18,5 @@ module.exports = async (event, context) => {
       'Content-Type': 'application/json'
     })
     .status(200)
-    .succeed(JSON.stringify(rows))
+    .succeed(rows)
 }

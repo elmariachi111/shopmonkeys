@@ -8,6 +8,7 @@ import { default as LokiTransport } from 'winston-loki'
 import {
   createProxyMiddleware,
   responseInterceptor,
+  fixRequestBody,
 } from 'http-proxy-middleware'
 
 import { init as DockerRouter } from './lib/DockerRouter'
@@ -56,40 +57,52 @@ app.post(
     body: RegisterSchema as JSONSchema7,
   }),
   (req, res) => {
-    const { route, target } = req.body
-    app.use(
-      route,
-      createProxyMiddleware({
-        target,
-        selfHandleResponse: true,
-        changeOrigin: true,
-        logProvider: () => logger,
-        onProxyRes: responseInterceptor(
-          async (responseBuffer, proxyRes, req, res) => {
-            const response = responseBuffer.toString('utf8')
-            if (res.statusCode && res.statusCode >= 400) {
-              logger.error(response)
-            }
-            return response
+    const { route, method, target } = req.body
+    console.log(method, route, target)
+
+    const middleware = createProxyMiddleware({
+      target,
+      selfHandleResponse: true,
+      changeOrigin: true,
+      logProvider: () => logger,
+      onProxyReq: fixRequestBody,
+      onProxyRes: responseInterceptor(
+        async (responseBuffer, proxyRes, req, res) => {
+          //const exchange = `[DEBUG] ${req.method} -> ${proxyRes.req.protocol}//${proxyRes.req.host}${proxyRes.req.path} [${proxyRes.statusCode}]`
+
+          if (proxyRes.statusCode && proxyRes.statusCode >= 400) {
+            logger.error(responseBuffer.toString('utf8'))
           }
-        ),
-        onError: (
-          err: Error & {
-            code: string
-          },
-          req: Request,
-          res: Response
-        ) => {
-          logger.error(err)
-          res.status(503).json({
-            target,
-            error: err.code,
-          })
+          return responseBuffer
+        }
+      ),
+
+      onError: (
+        err: Error & {
+          code: string
         },
-      })
-    )
+        req: Request,
+        res: Response
+      ) => {
+        logger.error('proxy err', err)
+        res.status(503).json({
+          target,
+          error: err.code,
+        })
+      },
+    })
+    switch (method) {
+      case 'POST':
+        app.post(route, middleware)
+        break
+      default:
+        app.get(route, middleware)
+    }
     res.json({
-      [route]: target,
+      [route]: {
+        method: method || 'GET',
+        target,
+      },
     })
   }
 )

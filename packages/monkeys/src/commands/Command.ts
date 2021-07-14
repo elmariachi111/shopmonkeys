@@ -13,7 +13,7 @@ export abstract class Command {
     service: string,
     body?: T | undefined
   ): Promise<any> {
-    return fetch(`${API_GATEWAY}${service}`, {
+    const res = await fetch(`${API_GATEWAY}${service}`, {
       method,
       body: body ? JSON.stringify(body) : undefined,
       headers: {
@@ -21,5 +21,10 @@ export abstract class Command {
         'User-Agent': this.monkey.getUserAgent(),
       },
     })
+    if (res.status >= 500) {
+      const e = await res.text()
+      throw Error(`Request to ${service} failed: ${e}`)
+    }
+    return res
   }
 }

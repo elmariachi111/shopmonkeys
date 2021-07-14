@@ -7,15 +7,15 @@ export class AddProduct extends Command {
   async execute(params: Product) {
     const productCreatedResult = await this.request<Product>(
       'POST',
-      '/product',
+      '/products',
       params
     )
 
     expect(productCreatedResult.status).to.equal(201)
-
     logger.info(`added product [${params.sku}]`, {
       monkeyId: this.monkey.monkeyId,
     })
+
     return productCreatedResult
   }
 }

@@ -7,19 +7,23 @@ const mysqlConnection = fs.readFileSync("/var/openfaas/secrets/mysql-connection"
 });
 
 module.exports = async (event, context) => {
-  
   const connection = await mysql.createConnection(mysqlConnection);
-  const statement = await connection.prepare("INSERT INTO products (sku, title) VALUES (?, ?);");
-  const [result] = await statement.execute([event.body.sku, event.body.title]);
-
-  const response = {
-    result
+  
+  context.headers({
+    'Content-Type': 'application/json'
+  })
+  
+  try {
+    const statement = await connection.prepare("INSERT INTO products (sku, title) VALUES (?, ?);");
+    const [result] = await statement.execute([event.body.sku, event.body.title]);
+    
+    return context.status(201)
+      .succeed({
+        result
+      })
+  } catch(e) {
+    return context.status(500)
+    .fail(e);
   }
-
-  return context
-    .headers({
-      'Content-Type': 'application/json'
-    })
-    .status(201)
-    .succeed(JSON.stringify(response))
+  
 }

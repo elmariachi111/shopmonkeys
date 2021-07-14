@@ -3,13 +3,44 @@ Content-Type: application/json
 
 {
   "route": "/products",
-  "target": "https://faasd.coding.earth/function/products"
+  "target": "http://registry.local:8080/function/getProducts"
 }
 
+#  //"target": "https://faasd.coding.earth/function/products"
 ###
 
 GET http://localhost:3000/products
 Content-Type: application/json
+
+###
+
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "method": "POST",
+  "route": "/products",
+  "target": "http://registry.local:8080/function/addProduct"
+}
+
+###
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "title": "Handmade Plastic Salad",
+  "sku": "3f51df5a-539d-4a9c-906f-3357d6c8f241"
+}
+
+###
+POST http://registry.local:8080/function/addProduct
+Content-Type: application/json
+
+{
+  "title": "Handmade Plastic Salad",
+  "sku": "3f51df5a-539d-4a9c-906f-3357d6c8f241"
+}
+
 
 ###
 GET http://localhost:3000/docker

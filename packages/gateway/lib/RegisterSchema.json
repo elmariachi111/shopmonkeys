@@ -6,6 +6,9 @@
     "target"
   ],
   "properties": {
+    "method": {
+      "type": "string"
+    },
     "route": {
       "type": "string"
     },
