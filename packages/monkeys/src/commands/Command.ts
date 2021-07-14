@@ -13,7 +13,7 @@ export abstract class Command {
     service: string,
     body?: T | undefined
   ): Promise<any> {
-    return fetch(`${API_GATEWAY}/${service}`, {
+    return fetch(`${API_GATEWAY}${service}`, {
       method,
       body: body ? JSON.stringify(body) : undefined,
       headers: {

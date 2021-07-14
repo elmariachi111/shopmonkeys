@@ -15,7 +15,7 @@ import { init as DockerRouter } from './lib/DockerRouter'
 const validator = new Validator({ allErrors: true })
 const validate = validator.validate
 const app = express()
-const port = 3005
+const port = 3000
 
 app.use(express.json())
 
