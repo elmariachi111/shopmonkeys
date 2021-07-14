@@ -48,11 +48,15 @@ https://github.com/openfaas/workshop/blob/master/README.md
 
 ### Coding Earth OpenFaasd
 
-We deployed an openfaasd daemon at faasd.coding.earth. It's _not_ based on a K8S deployment but runs in standalone mode (containerd). It therefore won't scale anything beyond one container (which is okay for demo purposes). You need to authenticate agains that daemon to deploy anything. OpenFaasd comes with a management frontend that allows you to deploy virtually anything: https://faasd.coding.earth/ui/
+We deployed an openfaasd gateway at faasd.coding.earth. It's _not_ based on a K8S deployment but runs in standalone mode (faasd/containerd). It therefore won't scale anything beyond one container, which is okay for demo purposes. You need to authenticate against that gateway to deploy anything.
+
+to avoid repetition, set OPENFAAS_URL=faasd.coding.earth as an environment variable (see `https://github.com/openfaas/faas-cli`).
+
+OpenFaasd comes with a management frontend that allows you to deploy virtually anything: https://faasd.coding.earth/ui/
 
 #### Registry
 
-To be able to deploy functions, their images must be available to the faasd runtime. Therefore we're operating a private docker registry as well: registry.coding.earth. You need another basic auth to access that instance.
+To be able to deploy functions, their images must be available for the faasd runtime. Therefore we're operating a private docker registry as well: `registry.coding.earth`. You need another basic auth to access that instance.
 
 ### simple functions
 
@@ -66,6 +70,8 @@ With Registry and Faasd in place you can start writing functions by cloning temp
 
 - create a new function
   `faas new myfunction --lang go`
+
+some demo templates: https://docs.openfaas.com/cli/templates/
 
 ### stack files
 
@@ -97,14 +103,25 @@ functions:
     image: registry.coding.earth/myfunction:latest
 ```
 
+here's the full reference: https://docs.openfaas.com/reference/yaml/
+
 ### build / deploy functions
 
 there's a shortcut command that allows you to build, push, register and activate a function at once: `faas up -f myfunction.yml`
 
 under the hood the `up` command calls `faas build -f myfunction.yml`, `faas push -f myfunction.yml` and `faas deploy -f myfunction.yml`.
 
+### invoke functions on the command line
+
+faas invoke getProducts --gateway=http://registry.local:8080
+
 #### local
 
 you can run the built images as containers on your local machine like so:
 
 docker run --rm -p 8880:8080 registry.coding.earth/products:latest
+
+if you need to connect to a local service from your function you might want to add it to the container's host file:
+docker run -p 8090:8080 --add-host registry.local:192.168.122.85 -ti registry.local:5000/getproducts:latest
+
+https://github.com/openfaas/workshop

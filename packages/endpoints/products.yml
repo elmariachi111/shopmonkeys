@@ -1,10 +1,20 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: https://faasd.coding.earth
+#  gateway: https://faasd.coding.earth
+  gateway: http://registry.local:8080
 functions:
-  products:
+  addProduct:
     lang: node14
-    handler: ./products
-    image: registry.coding.earth/products:latest
-
+    handler: ./products/addProduct
+#    image: registry.coding.earth/addproduct:latest
+    image: ${DOCKER_REGISTRY:-registry.local:5000}/stadolf/addproduct:latest
+    secrets:
+      - mysql-connection
+  getProducts:
+    lang: node14
+    handler: ./products/getProducts
+    #image: registry.coding.earth/getproducts:latest
+    image: ${DOCKER_REGISTRY:-registry.local:5000}/stadolf/getproducts:latest
+    secrets:
+      - mysql-connection
