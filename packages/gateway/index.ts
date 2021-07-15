@@ -22,8 +22,16 @@ app.use(express.json())
 
 const logger = winston.createLogger({
   transports: [
-    new winston.transports.Console(),
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.prettyPrint(),
+        winston.format.simple()
+        //winston.format.json()
+      ),
+    }),
     new LokiTransport({
+      //format: winston.format.combine(winston.format.json()),
       host: 'http://127.0.0.1:3100',
       interval: 1,
       labels: {
@@ -31,6 +39,7 @@ const logger = winston.createLogger({
       },
     }),
   ],
+
   // format: winston.format.combine(
   //   winston.format.colorize(),
   //   //winston.format.prettyPrint(),

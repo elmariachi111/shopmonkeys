@@ -1,0 +1,4 @@
+[mysqld]
+interactive_timeout=15
+wait_timeout=15
+

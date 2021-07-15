@@ -10,8 +10,8 @@ module.exports = async (event, context) => {
   });
 
   const connection = await mysql.createConnection(mysqlConnection);
-
   const [rows, fields] = await connection.execute("SELECT * FROM products;");
+  connection.end();
 
   return context
     .headers({

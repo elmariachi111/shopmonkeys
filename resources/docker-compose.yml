@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 13001:8080
+
+  mariadb:
+    restart: always
+    image: mariadb:10
+    ports:
+      - '0.0.0.0:13307:3306'
+    environment:
+      MARIADB_ROOT_PASSWORD: secretpwd
+      MARIADB_DATABASE: monkeys
+      MARIADB_USER: monkey
+      MARIADB_PASSWORD: monkey
+    volumes:
+      - ./mariadb:/var/lib/mysql
+      - ./maria-connections.cnf:/etc/mysql/mariadb.conf.d/70-connections.cnf

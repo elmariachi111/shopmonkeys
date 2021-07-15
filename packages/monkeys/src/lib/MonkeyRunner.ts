@@ -18,6 +18,6 @@ export class MonkeyRunner {
           monkey.run()
         }
       }
-    }, 2000)
+    }, 1000)
   }
 }

@@ -9,12 +9,12 @@ const main = async () => {
   monkeyRunner
     .add(
       new OfferMonkey({
-        interval: 3000,
+        interval: 5000,
       })
     )
     .add(
       new BuyerMonkey({
-        interval: 5000,
+        interval: 8000,
       })
     )
 

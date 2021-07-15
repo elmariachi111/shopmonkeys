@@ -1,17 +1,21 @@
 import { GetAllProducts } from '../commands/GetAllProducts'
-import { logger } from '../lib/Logger'
 import { Monkey } from './Monkey'
 
 export class BuyerMonkey extends Monkey {
+  protected monkeyType = 'BuyerMonkey'
+
   async run() {
+    const command = new GetAllProducts(this)
     try {
-      const allProducts = await new GetAllProducts(this).execute()
-      logger.info(`fetched [${allProducts.length}] products`, {
-        monkeyId: this.monkeyId,
+      const allProducts = await command.execute()
+
+      this.log('info', {
+        message: `fetched [${allProducts.length}] products`,
       })
     } catch (e) {
-      logger.error(e.message, {
-        monkeyId: this.monkeyId,
+      this.log('error', {
+        message: e.message,
+        ...command.asJson(),
       })
     }
     this.lastRun = new Date()
