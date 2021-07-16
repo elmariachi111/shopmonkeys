@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker:build": "docker build --tag stadolf/node-sample:latest",
+    "docker:run": "docker run --rm -p '3010:3000' -e 'PORT=3000' stadolf/node-sample"
   },
   "author": "",
   "license": "ISC",

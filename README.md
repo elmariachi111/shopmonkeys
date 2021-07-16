@@ -125,3 +125,6 @@ if you need to connect to a local service from your function you might want to a
 docker run -p 8090:8080 --add-host registry.local:192.168.122.85 -ti registry.local:5000/getproducts:latest
 
 https://github.com/openfaas/workshop
+
+ngrok
+https://dashboard.ngrok.com/get-started/setup

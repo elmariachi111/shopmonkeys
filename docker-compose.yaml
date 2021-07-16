@@ -2,13 +2,15 @@ version: '3'
 
 networks:
   loki:
-
+  kong-net:
 services:
   loki:
     image: grafana/loki:2.0.0
     ports:
       - '3100:3100'
     command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./data/loki:/data/loki
     networks:
       - loki
 
@@ -24,5 +26,59 @@ services:
     image: grafana/grafana:latest
     ports:
       - '3005:3000'
+    volumes:
+      - ./data/grafana:/var/lib/grafana
     networks:
       - loki
+
+  kong-db:
+    image: postgres:9.6
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kong
+    networks:
+      - kong-net
+
+  kong:
+    image: kong:latest
+    ports:
+      - '9090:8000'
+      - '9093:8443'
+      - '127.0.0.1:9001:8001'
+      - '127.0.0.1:9094:8444'
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-db
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kong
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    networks:
+      - kong-net
+
+  konga:
+    image: pantsel/konga
+    ports:
+      - '9099:1337'
+    environment:
+      NODE_ENV: production
+      PORT: '1337'
+      NO_AUTH: 'true'
+    networks:
+      - kong-net
+
+  # nodered:
+  #   image: nodered/node-red:latest
+  #   network_mode: 'host'
+  #   environment:
+  #     - TZ=Europe/Berlin
+  #   expose:
+  #     - 1880
+  #   volumes:
+  #     - ./data/nodered:/data

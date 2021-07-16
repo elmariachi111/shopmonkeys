@@ -13,6 +13,30 @@ importers:
       ts-node: ^10.0.0
       ts-node-dev: ^1.1.6
       typescript: ^4.3.2
+  packages/endpoints/build/addProduct:
+    dependencies:
+      body-parser: 1.19.0
+      express: 4.17.1
+    specifiers:
+      body-parser: ^1.18.2
+      express: ^4.16.2
+  packages/endpoints/build/addProduct/function:
+    dependencies:
+      mysql2: 2.2.5
+    specifiers:
+      mysql2: ^2.2.5
+  packages/endpoints/build/getProducts:
+    dependencies:
+      body-parser: 1.19.0
+      express: 4.17.1
+    specifiers:
+      body-parser: ^1.18.2
+      express: ^4.16.2
+  packages/endpoints/build/getProducts/function:
+    dependencies:
+      mysql2: 2.2.5
+    specifiers:
+      mysql2: ^2.2.5
   packages/endpoints/build/products:
     dependencies:
       body-parser: 1.19.0
@@ -27,7 +51,12 @@ importers:
       express: 4.17.1
     specifiers:
       express: ^4.17.1
-  packages/endpoints/products:
+  packages/endpoints/products/addProduct:
+    dependencies:
+      mysql2: 2.2.5
+    specifiers:
+      mysql2: ^2.2.5
+  packages/endpoints/products/getProducts:
     dependencies:
       mysql2: 2.2.5
     specifiers:

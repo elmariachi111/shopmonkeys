@@ -1,7 +1,7 @@
 import { Monkey } from '../monkeys/Monkey'
 import { default as fetch } from 'node-fetch'
 
-export const API_GATEWAY = 'http://localhost:3000'
+export const API_GATEWAY = 'http://localhost:9090'
 
 export interface CommandRequestPayload {
   params?: Record<string, string>
