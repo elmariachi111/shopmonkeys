@@ -1,8 +1,14 @@
+interface Entity {
+  id: number | string
+}
+
 export interface Product {
   title: string
   sku: string | number
   options?: ProductOption[]
 }
+
+export interface ProductEntity extends Product, Entity {}
 
 export interface ProductOption {
   name: string
@@ -21,4 +27,6 @@ export enum Currency {
   USD = 'USD',
   MKY = 'MKY',
   YUA = 'YUA',
+  ETH = 'ETH',
+  BTC = 'BTC',
 }

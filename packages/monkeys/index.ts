@@ -1,22 +1,21 @@
 import { MonkeyRunner } from './src/lib/MonkeyRunner'
-import { BuyerMonkey } from './src/monkeys/BuyerMonkey'
+import { BrowserMonkey } from './src/monkeys/BrowserMonkey'
 import { Monkey } from './src/monkeys/Monkey'
-import { OfferMonkey } from './src/monkeys/OfferMonkey'
+import { ProductMonkey } from './src/monkeys/ProductMonkey'
 
 const main = async () => {
   const monkeyRunner = new MonkeyRunner()
 
-  monkeyRunner
-    .add(
-      new OfferMonkey({
-        interval: 5000,
-      })
-    )
-    .add(
-      new BuyerMonkey({
-        interval: 8000,
-      })
-    )
+  monkeyRunner.add(
+    new ProductMonkey({
+      interval: 2000,
+    })
+  )
+  // .add(
+  //   new BrowserMonkey({
+  //     interval: 8000,
+  //   })
+  // )
 
   monkeyRunner.start()
 }

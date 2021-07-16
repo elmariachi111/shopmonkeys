@@ -4,7 +4,7 @@
 
 The monkey shop is a microservice application without an implementation, and besides what the name implies: it's not a shop to buy monkeys, it's a shop that's visited by monkeys - software agents, that unpredictably follow a plan (which you don't know ;) ). A good analogy is actually a pentesting system that loads up your application with unpredictable requests.
 
-There are monkeys calling the defunct endpoints all the time. You can only see the application's log file to get an idea of what the monkeys are about to. Your goal is to write implementations for the endpoints the monkeys are calling, deploy and register them at the API gateway to finally assemble a system that makes all monkeys happy.
+There are monkeys calling the defunct endpoints all the time. You can only see the application's log file to get an idea of what the monkeys are about to. Your goal is to write implementations for the endpoints the monkeys are calling, deploy and register them at the API gateway to finally assemble a system that makes all monkeys happy. API Gateway = Kong: https://docs.konghq.com/getting-started-guide/2.4.x/expose-services/
 
 We won't spoiler too much details here but monkeys will e.g.
 

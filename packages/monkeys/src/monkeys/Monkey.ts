@@ -10,6 +10,17 @@ export abstract class Monkey {
   readonly options: RunOptions
   public lastRun: Date | undefined
   protected abstract monkeyType: string = 'AbstractMonkey'
+  private isRunning = false
+
+  public abstract doRun(): Promise<void>
+
+  public async run(): Promise<void> {
+    if (this.isRunning) return
+    this.isRunning = true
+    await this.doRun()
+    this.lastRun = new Date()
+    this.isRunning = false
+  }
 
   constructor(options: RunOptions) {
     this.monkeyId = nanoid()
@@ -17,7 +28,7 @@ export abstract class Monkey {
   }
 
   public getUserAgent() {
-    return `ShopMonkey/0.1 monkey: ${this.monkeyId}`
+    return `ShopMonkey/0.1 [${this.monkeyType}]: ${this.monkeyId}`
   }
 
   public isDue(now: Date): boolean {
@@ -32,5 +43,4 @@ export abstract class Monkey {
       monkeyId: this.monkeyId,
     })
   }
-  abstract run(): Promise<any>
 }

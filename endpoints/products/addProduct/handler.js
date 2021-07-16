@@ -17,10 +17,14 @@ module.exports = async (event, context) => {
     const statement = await connection.prepare("INSERT INTO products (sku, title) VALUES (?, ?);");
     const [result] = await statement.execute([event.body.sku, event.body.title]);
     connection.end();  
+
+    const res = {
+      id: result.insertId,     
+      ...event.body,
+    }
+
     return context.status(201)
-      .succeed({
-        result
-      })
+      .succeed(res)
   } catch(e) {
     return context.status(500)
     .fail(e);

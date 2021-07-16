@@ -13,6 +13,7 @@ services:
       - ./data/loki:/data/loki
     networks:
       - loki
+      - kong-net
 
   promtail:
     image: grafana/promtail:2.0.0
@@ -39,6 +40,8 @@ services:
       POSTGRES_USER: kong
       POSTGRES_DB: kong
       POSTGRES_PASSWORD: kong
+    volumes:
+      - ./data/kong-db:/var/lib/postgresql/data
     networks:
       - kong-net
 
@@ -59,7 +62,14 @@ services:
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    depends_on:
+      - kong-db
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://loki:3100/loki/api/v1/push'
     networks:
+      - loki
       - kong-net
 
   konga:
@@ -70,6 +80,8 @@ services:
       NODE_ENV: production
       PORT: '1337'
       NO_AUTH: 'true'
+    depends_on:
+      - kong
     networks:
       - kong-net
 

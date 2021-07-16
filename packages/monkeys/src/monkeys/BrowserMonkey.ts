@@ -1,11 +1,12 @@
 import { GetAllProducts } from '../commands/GetAllProducts'
 import { Monkey } from './Monkey'
 
-export class BuyerMonkey extends Monkey {
-  protected monkeyType = 'BuyerMonkey'
+export class BrowserMonkey extends Monkey {
+  protected monkeyType = 'BrowserMonkey'
 
-  async run() {
+  async doRun(): Promise<void> {
     const command = new GetAllProducts(this)
+    this.lastRun = new Date()
     try {
       const allProducts = await command.execute()
 
@@ -18,6 +19,5 @@ export class BuyerMonkey extends Monkey {
         ...command.asJson(),
       })
     }
-    this.lastRun = new Date()
   }
 }
