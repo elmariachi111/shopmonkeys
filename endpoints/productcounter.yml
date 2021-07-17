@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://registry.local:8080
+functions:
+  productcounter:
+    lang: ruby
+    handler: ./productcounter
+    image: ${DOCKER_REGISTRY:-registry.local:5000}/stadolf/productcounter:latest
+
