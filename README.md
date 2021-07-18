@@ -128,3 +128,44 @@ https://github.com/openfaas/workshop
 
 ngrok
 https://dashboard.ngrok.com/get-started/setup
+
+templates
+
+https://github.com/openfaas-incubator/?q=template&type=&language=&sort=
+faas-cli template store list
+
+faas template store ls -v
+faas-cli template store pull rust-http
+
+tested languages
+ruby
+
+very basic node app (that keeps running)
+
+```js
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 8080
+
+app.all('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+```
+
+```dockerfile
+FROM node:16-alpine
+
+ENV NODE_ENV=production
+WORKDIR /app
+COPY ["package.json", "package-lock.json*", "./"]
+RUN npm install --production
+COPY . .
+CMD [ "node", "index.js" ]
+```
+
+https://www.openfaas.com/blog/stateless-microservices/
+https://blog.alexellis.io/serverless-databases-with-openfaas-and-mongo/

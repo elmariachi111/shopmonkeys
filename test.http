@@ -55,7 +55,7 @@ Content-Type: application/json
 
 ### invoke
 
-GET http://localhost:9090/products
+GET http://localhost:9090/products?search=mouse
 apikey: KEVhigwHLMYViPKIhWPCk9c9RHX96JzR
 
 ###

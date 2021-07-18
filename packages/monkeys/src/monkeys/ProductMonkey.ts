@@ -1,4 +1,4 @@
-import { AddProduct } from '../commands/AddProduct'
+import { AddProduct } from '../commands/Products'
 
 import {
   Currency,
@@ -44,7 +44,7 @@ export class ProductMonkey extends Monkey {
 
   private phase = ProductMonkeyPhase.ADD_PRODUCTS
 
-  private onlineProducts: ProductEntity[] = []
+  private addedProducts: ProductEntity[] = []
 
   private productsToAdd: Product[] = []
 
@@ -64,26 +64,18 @@ export class ProductMonkey extends Monkey {
   }
 
   protected async addNextProduct(): Promise<void> {
-    const command = new AddProduct(this)
+    this.currentCommand = new AddProduct(this)
     const product = this.productsToAdd[0]
-    let result
-    try {
-      result = await command.execute(product)
-      expect(result).to.include({ sku: product.sku })
-      expect(result).to.have.any.keys('id')
-      this.onlineProducts.push(result)
-      this.log('info', { message: `added product`, result })
 
-      //todo: use a fix
-      this.productsToAdd.shift()
-    } catch (e) {
-      //console.log(e)
-      this.log('error', {
-        message: e.message,
-        request: command.asJson(),
-        result,
-      })
-    }
+    this.currentResult = await this.currentCommand.execute(product)
+    expect(this.currentResult).to.include({ sku: product.sku })
+    expect(this.currentResult).to.have.any.keys('id')
+
+    this.addedProducts.push(this.currentResult)
+    this.log('info', { message: `added product`, product: this.currentResult })
+
+    //todo: use a fix set of products & another one to track added products
+    this.productsToAdd.shift()
   }
 
   async doRun(): Promise<void> {

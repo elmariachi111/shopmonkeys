@@ -4,28 +4,49 @@ import { default as fetch } from 'node-fetch'
 export const API_GATEWAY = 'http://localhost:9090'
 
 export interface CommandRequestPayload {
-  params?: Record<string, string>
+  query?: Record<string, string>
   body?: Record<string, any>
 }
 export abstract class Command {
   protected abstract service: string
   protected abstract verb: string
-  protected requestPayload?: CommandRequestPayload | undefined
+
+  protected requestPayload: CommandRequestPayload = {}
 
   constructor(protected monkey: Monkey) {}
 
-  abstract execute(params?: any): Promise<any>
+  /**
+   * this is domain specific. Clients use their domain
+   * objects as parameters and the command translates
+   * them to their API representation.
+   *
+   * @param input any
+   */
+  abstract execute(input?: any): Promise<any>
 
-  protected async request(
-    requestPayload?: CommandRequestPayload
-  ): Promise<any> {
-    this.requestPayload = requestPayload
+  protected buildQuery(): string {
+    if (
+      this.requestPayload.query &&
+      Object.keys(this.requestPayload.query).length > 0
+    ) {
+      return (
+        '?' +
+        Object.keys(this.requestPayload.query)
+          .map(
+            (k) => `${k}=${encodeURIComponent(this.requestPayload.query![k])}`
+          )
+          .join('&')
+      )
+    }
+    return ''
+  }
 
-    const endpoint = `${API_GATEWAY}${this.service}`
+  protected async request(): Promise<any> {
+    const endpoint = `${API_GATEWAY}${this.service}${this.buildQuery()}`
     const res = await fetch(endpoint, {
       method: this.verb,
-      body: requestPayload?.body
-        ? JSON.stringify(requestPayload.body)
+      body: this.requestPayload?.body
+        ? JSON.stringify(this.requestPayload.body)
         : undefined,
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +55,7 @@ export abstract class Command {
     })
     if (res.status >= 400) {
       const e = await res.text()
-      throw Error(`${this.verb}  ${endpoint} failed: ${e}`)
+      throw Error(`${this.verb} ${endpoint} failed: ${e}`)
     }
     return res
   }
@@ -43,7 +64,7 @@ export abstract class Command {
     return {
       service: this.service,
       method: this.verb,
-      payload: this.requestPayload,
+      params: this.requestPayload,
     }
   }
 }
