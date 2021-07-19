@@ -4,6 +4,7 @@ import { default as LokiTransport } from 'winston-loki'
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
+      level: 'debug',
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.prettyPrint(),

@@ -1,5 +1,11 @@
 #!/usr/bin/env node
+import { system } from 'faker'
 import yargs from 'yargs'
+import {
+  MakeBanana,
+  FakeProduct,
+  SequentialSKUGenerator,
+} from './src/lib/ProductMaker'
 import { BrowserMonkey } from './src/monkeys/BrowserMonkey'
 import { ProductMonkey } from './src/monkeys/ProductMonkey'
 
@@ -10,16 +16,31 @@ yargs
     'product [amount]',
     'add products',
     (yargs) => {
-      yargs.positional('amount', { type: 'number' })
+      yargs
+        .positional('amount', { type: 'number' })
+        .option('file', { type: 'string', demandOption: true })
+        .option('seed', { type: 'number', alias: 's' })
     },
     async (argv) => {
       const monkey = new ProductMonkey({
-        interval: 2000,
+        interval: 1000,
+        productMaker: MakeBanana(
+          argv.file as string,
+          SequentialSKUGenerator('BAN')
+        ),
         amount: (argv.amount || 10) as number,
       })
-      setInterval(() => {
-        if (monkey.isDue(new Date())) monkey.run()
-      }, 5000)
+      await monkey.initialize()
+
+      const intvl = setInterval(async () => {
+        if (monkey.isDue(new Date())) {
+          const finished = await monkey.run()
+          if (finished) {
+            clearInterval(intvl)
+            process.exit(0)
+          }
+        }
+      }, 1000)
     }
   )
   .command(
@@ -30,8 +51,14 @@ yargs
       const monkey = new BrowserMonkey({
         interval: 2000,
       })
-      setInterval(() => {
-        if (monkey.isDue(new Date())) monkey.run()
+      const intvl = setInterval(async () => {
+        if (monkey.isDue(new Date())) {
+          const finished = await monkey.run()
+          if (finished) {
+            clearInterval(intvl)
+            process.exit(0)
+          }
+        }
       }, 2000)
     }
   )

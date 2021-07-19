@@ -1,20 +1,13 @@
-import { AddProduct } from '../commands/Products'
-
-import {
-  Currency,
-  Product,
-  ProductEntity,
-  ProductOffer,
-} from '../types/Products'
-import { Monkey, RunOptions } from './Monkey'
-import { default as faker } from 'faker'
 import { expect } from 'chai'
+import { AddProduct } from '../commands/Products'
 import { logger } from '../lib/Logger'
+import { Product, ProductEntity } from '../types/Products'
+import { Monkey, RunOptions } from './Monkey'
 
-interface OfferMonkeyState {
-  products: Array<Product & { id?: number | string }>
-  offers: ProductOffer[]
-}
+// interface ProductMonkeyState {
+//   products: Array<Product & { id?: number | string }>
+//   offers: ProductOffer[]
+// }
 
 enum ProductMonkeyPhase {
   ADD_PRODUCTS,
@@ -46,47 +39,55 @@ export class ProductMonkey extends Monkey {
 
   private addedProducts: ProductEntity[] = []
 
-  private productsToAdd: Product[] = []
+  private retryProduct: Product | undefined
 
-  constructor(options: RunOptions & { amount?: number }) {
+  constructor(options: RunOptions & { productMaker: Generator<Product> }) {
     super(options)
-    this.inventInitialProducts(options.amount || 10)
   }
 
-  public inventInitialProducts(amount: number) {
-    for (let i = amount; i-- > 0; ) {
-      const product: Product = {
-        title: faker.commerce.productName(),
-        sku: faker.datatype.uuid(), //random.alphaNumeric(10),
-      }
-      this.productsToAdd.push(product)
-    }
-  }
-
-  protected async addNextProduct(): Promise<void> {
+  protected async addProduct(product: Product): Promise<void> {
     this.currentCommand = new AddProduct(this)
-    const product = this.productsToAdd[0]
 
-    this.currentResult = await this.currentCommand.execute(product)
-    expect(this.currentResult).to.include({ sku: product.sku })
-    expect(this.currentResult).to.have.any.keys('id')
+    const result = await this.currentCommand.execute(product)
+    this.currentResult = await result.json()
+    if (result.status === 409) {
+      this.log('warn', {
+        message: `conflict with product sku [${product.sku}]`,
+        product: this.currentResult,
+      })
+    } else {
+      expect(this.currentResult).to.include({ sku: product.sku })
+      expect(this.currentResult).to.contain.keys(product)
 
-    this.addedProducts.push(this.currentResult)
-    this.log('info', { message: `added product`, product: this.currentResult })
-
-    //todo: use a fix set of products & another one to track added products
-    this.productsToAdd.shift()
+      this.addedProducts.push(this.currentResult)
+      this.log('info', {
+        message: `added product`,
+        product: this.currentResult,
+      })
+    }
   }
 
-  async doRun(): Promise<void> {
-    switch (this.phase) {
-      case ProductMonkeyPhase.ADD_PRODUCTS:
-        await this.addNextProduct()
-        if (this.productsToAdd.length === 0)
-          this.phase = ProductMonkeyPhase.ADD_VARIANTS
-        break
-      case ProductMonkeyPhase.ADD_VARIANTS:
-        logger.warn('ADD_VARIANTS phase not implemented')
+  // protected async addVariant(product: Product) {
+  //   const variant: ProductVariant = {
+  //     name: faker.commerce.productAdjective,
+  //   }
+  //   this.currentCommand = new AddVariant({ variant })
+  //   this.currentCommand?.execute(product, variant)
+  // }
+
+  async doRun(): Promise<boolean> {
+    if (this.retryProduct) {
+      await this.addProduct(this.retryProduct)
+    } else {
+      const { value: product, done } = this.options.productMaker.next()
+      if (!done) {
+        this.retryProduct = product
+        await this.addProduct(product)
+      } else {
+        return true
+      }
     }
+    this.retryProduct = undefined
+    return false
   }
 }

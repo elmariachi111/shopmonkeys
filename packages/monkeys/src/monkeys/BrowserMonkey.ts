@@ -6,10 +6,12 @@ import { Monkey } from './Monkey'
 export class BrowserMonkey extends Monkey {
   protected monkeyType = 'BrowserMonkey'
 
-  async doRun(): Promise<void> {
+  async doRun(): Promise<boolean> {
     this.currentCommand = new GetAllProducts(this)
 
-    this.currentResult = await this.currentCommand.execute()
+    let result = await this.currentCommand.execute()
+    this.currentResult = await result.json()
+    expect(this.currentResult).to.be.an('array')
     expect(this.currentResult.length).to.be.gt(0)
     expect(this.currentResult.length).to.be.lte(20)
 
@@ -17,9 +19,11 @@ export class BrowserMonkey extends Monkey {
       message: `fetched [${this.currentResult.length}] products`,
     })
 
-    const searchPhrase = 'mouse'
+    const searchPhrase = 'goldfinger'
     this.currentCommand = new SearchProducts(this)
-    this.currentResult = await this.currentCommand.execute(searchPhrase)
+    result = await this.currentCommand.execute(searchPhrase)
+    this.currentResult = await result.json()
+    expect(this.currentResult).to.be.an('array')
     const searchResults = this.currentResult.filter(
       (res: Product) => res.title.toLowerCase().indexOf(searchPhrase) !== -1
     )
@@ -28,6 +32,7 @@ export class BrowserMonkey extends Monkey {
     this.log('info', {
       message: `found [${this.currentResult.length}] products with [${searchPhrase}]`,
     })
+    return true
     //todo: searchResult should be shorter than allProducts
     //todo: searchResult should contian bananas.
   }

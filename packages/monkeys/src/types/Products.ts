@@ -5,18 +5,20 @@ interface Entity {
 export interface Product {
   title: string
   sku: string | number
-  options?: ProductOption[]
+  categories?: string[]
+  attributes?: ProductAttribute[]
 }
 
 export interface ProductEntity extends Product, Entity {}
 
-export interface ProductOption {
+export interface ProductAttribute {
   name: string
   value: any
 }
 
 export interface ProductOffer {
   product: Product
+  variants: ProductAttribute[]
   price: number
   decimals: number
   currency: Currency

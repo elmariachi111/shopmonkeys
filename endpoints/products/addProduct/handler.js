@@ -14,7 +14,7 @@ module.exports = async (event, context) => {
   })
   
   try {
-    const statement = await connection.prepare("INSERT INTO products (sku, title) VALUES (?, ?);");
+    const statement = await connection.prepare("REPLACE INTO products (sku, title) VALUES (?, ?);");
     const [result] = await statement.execute([event.body.sku, event.body.title]);
     connection.end();  
 

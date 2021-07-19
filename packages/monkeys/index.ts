@@ -1,4 +1,5 @@
 import { MonkeyRunner } from './src/lib/MonkeyRunner'
+import { FakeProduct, HashSKUGenerator } from './src/lib/ProductMaker'
 import { BrowserMonkey } from './src/monkeys/BrowserMonkey'
 import { Monkey } from './src/monkeys/Monkey'
 import { ProductMonkey } from './src/monkeys/ProductMonkey'
@@ -9,6 +10,7 @@ const main = async () => {
   monkeyRunner.add(
     new ProductMonkey({
       interval: 2000,
+      productMaker: FakeProduct(HashSKUGenerator()),
     })
   )
   // .add(

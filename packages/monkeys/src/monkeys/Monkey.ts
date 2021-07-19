@@ -4,25 +4,38 @@ import { logger } from '../lib/Logger'
 
 export interface RunOptions {
   interval: number
+  monkeyId?: string
+  [key: string]: any
 }
 
 export abstract class Monkey {
   readonly monkeyId
-  readonly options: RunOptions
-  public lastRun: Date | undefined
   protected abstract monkeyType: string = 'AbstractMonkey'
-  private isRunning = false
+
+  readonly options: RunOptions
 
   protected currentCommand: Command | undefined
   protected currentResult: any | undefined
 
-  public abstract doRun(): Promise<void>
+  public abstract doRun(): Promise<boolean>
+  public lastRun: Date | undefined
+  private isRunning = false
 
-  public async run(): Promise<void> {
-    if (this.isRunning) return
+  private initialized = false
+
+  public async initialize() {
+    this.initialized = true
+  }
+
+  public async run(): Promise<boolean> {
+    if (!this.initialized) await this.initialize()
+
+    if (this.isRunning) return false
     this.isRunning = true
+    let finished = false
+
     try {
-      await this.doRun()
+      finished = await this.doRun()
     } catch (e) {
       //console.error(e)
       this.log('error', {
@@ -37,10 +50,11 @@ export abstract class Monkey {
 
     this.lastRun = new Date()
     this.isRunning = false
+    return finished
   }
 
   constructor(options: RunOptions) {
-    this.monkeyId = nanoid()
+    this.monkeyId = options.monkeyId || nanoid()
     this.options = options
   }
 

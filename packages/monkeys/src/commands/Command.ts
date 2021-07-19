@@ -1,5 +1,5 @@
 import { Monkey } from '../monkeys/Monkey'
-import { default as fetch } from 'node-fetch'
+import { Response, default as fetch } from 'node-fetch'
 
 export const API_GATEWAY = 'http://localhost:9090'
 
@@ -7,6 +7,7 @@ export interface CommandRequestPayload {
   query?: Record<string, string>
   body?: Record<string, any>
 }
+
 export abstract class Command {
   protected abstract service: string
   protected abstract verb: string
@@ -21,8 +22,9 @@ export abstract class Command {
    * them to their API representation.
    *
    * @param input any
+   * @throws Error
    */
-  abstract execute(input?: any): Promise<any>
+  abstract execute(input?: any): Promise<Response>
 
   protected buildQuery(): string {
     if (
@@ -41,7 +43,7 @@ export abstract class Command {
     return ''
   }
 
-  protected async request(): Promise<any> {
+  protected async request(): Promise<Response> {
     const endpoint = `${API_GATEWAY}${this.service}${this.buildQuery()}`
     const res = await fetch(endpoint, {
       method: this.verb,
