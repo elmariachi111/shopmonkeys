@@ -50,6 +50,11 @@ export abstract class Monkey {
 
     this.lastRun = new Date()
     this.isRunning = false
+    if (finished) {
+      this.log('info', {
+        message: 'monkey has finished',
+      })
+    }
     return finished
   }
 

@@ -1,12 +1,16 @@
 import { expect } from 'chai'
-import { GetAllProducts, SearchProducts } from '../commands/Products'
+import {
+  FilterProducts,
+  GetAllProducts,
+  SearchProducts,
+} from '../commands/Products'
 import { Product } from '../types/Products'
 import { Monkey } from './Monkey'
 
 export class BrowserMonkey extends Monkey {
   protected monkeyType = 'BrowserMonkey'
 
-  async doRun(): Promise<boolean> {
+  private async findAllProducts() {
     this.currentCommand = new GetAllProducts(this)
 
     let result = await this.currentCommand.execute()
@@ -18,10 +22,12 @@ export class BrowserMonkey extends Monkey {
     this.log('info', {
       message: `fetched [${this.currentResult.length}] products`,
     })
+  }
 
+  private async searchProducts() {
     const searchPhrase = 'goldfinger'
     this.currentCommand = new SearchProducts(this)
-    result = await this.currentCommand.execute(searchPhrase)
+    const result = await this.currentCommand.execute(searchPhrase)
     this.currentResult = await result.json()
     expect(this.currentResult).to.be.an('array')
     const searchResults = this.currentResult.filter(
@@ -32,6 +38,36 @@ export class BrowserMonkey extends Monkey {
     this.log('info', {
       message: `found [${this.currentResult.length}] products with [${searchPhrase}]`,
     })
+  }
+
+  private async filterCategory(category: string) {
+    this.currentCommand = new FilterProducts(this)
+
+    const result = await this.currentCommand.execute({
+      filter: 'category',
+      value: category,
+    })
+
+    this.currentResult = await result.json()
+    expect(this.currentResult).to.be.an('array')
+    expect(this.currentResult).to.have.length.gt(0)
+    expect(this.currentResult).to.have.length.lte(20)
+
+    const bananas = this.currentResult.filter((res: Product) =>
+      res.categories?.includes(category)
+    )
+
+    expect(bananas).to.have.length.gt(0)
+    this.log('info', {
+      message: `found [${this.currentResult.length}] products for [category]=[${category}]`,
+    })
+  }
+
+  async doRun(): Promise<boolean> {
+    await this.findAllProducts()
+    await this.searchProducts()
+    await this.filterCategory('banana')
+
     return true
     //todo: searchResult should be shorter than allProducts
     //todo: searchResult should contian bananas.

@@ -26,6 +26,24 @@ export class SearchProducts extends GetAllProducts {
   }
 }
 
+export class FilterProducts extends GetAllProducts {
+  async execute({
+    filter,
+    value,
+  }: {
+    filter: string
+    value: string
+  }): Promise<Response> {
+    this.requestPayload = {
+      query: {
+        'filter[]': `${filter}=${value}`,
+      },
+    }
+
+    return super.execute()
+  }
+}
+
 export class AddAttribute extends Command {
   protected service = `/products/{id}/variant`
   protected verb = 'POST'
