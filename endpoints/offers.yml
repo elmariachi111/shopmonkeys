@@ -1,0 +1,11 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://registry.local:8080
+functions:
+  offers:
+    lang: php8
+    handler: ./offers
+    image: ${DOCKER_REGISTRY:-registry.local:5000}/stadolf/offers:latest
+    secrets:
+      - mongo-connection
