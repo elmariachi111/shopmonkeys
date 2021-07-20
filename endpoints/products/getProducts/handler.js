@@ -16,12 +16,24 @@ module.exports = async (event, context) => {
   const criteria = {};
 
   if (event.query) {
-    const { search } = event.query;
+
+    const { search, attributes, categories } = event.query;
     if (search) {
       criteria["$text"] ={$search: search};
     }
+    
+    if (categories) {
+      criteria['categories'] = categories;
+    }
+
+    if (attributes) {
+      const [name, value] = attributes.split('=');
+      criteria["attributes"] = { name, value }
+    }
   }
 
+  console.log(criteria);
+  
   const rows = await col.find(criteria).toArray();
   await client.close()
   

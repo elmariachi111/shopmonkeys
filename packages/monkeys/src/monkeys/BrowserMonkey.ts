@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import {
-  FilterProducts,
+  FilterAttributes,
+  FilterCategories,
   GetAllProducts,
   SearchProducts,
 } from '../commands/Products'
@@ -39,13 +40,27 @@ export class BrowserMonkey extends Monkey {
     })
   }
 
-  private async filterCategory(category: string) {
-    this.currentCommand = new FilterProducts(this)
-
-    const result = await this.currentCommand.execute({
-      filter: 'category',
-      value: category,
+  private async filterAttributes(attr: { name: string; value: string }) {
+    this.currentCommand = new FilterAttributes(this)
+    const result = await this.currentCommand.execute(attr)
+    this.currentResult = await result.json()
+    expect(this.currentResult).to.be.an('array')
+    expect(this.currentResult).to.have.length.gt(0)
+    expect(this.currentResult).to.have.length.lte(20)
+    this.currentResult.forEach((res: Product) =>
+      expect(
+        res.attributes,
+        `product [${res.sku}] doesnt contain attribute {${attr.name}: ${attr.value}}`
+      ).to.deep.include(attr)
+    )
+    this.log('info', {
+      message: `found [${this.currentResult.length}] products with  {${attr.name}: ${attr.value}}]`,
     })
+  }
+  private async filterCategory(category: string) {
+    this.currentCommand = new FilterCategories(this)
+
+    const result = await this.currentCommand.execute(category)
 
     this.currentResult = await result.json()
     expect(this.currentResult).to.be.an('array')
@@ -67,9 +82,9 @@ export class BrowserMonkey extends Monkey {
 
   async doRun(): Promise<boolean> {
     await this.findAllProducts()
+    await this.filterAttributes({ name: 'group', value: 'AA' })
     await this.searchProducts('lacatan')
     await this.filterCategory('bananas')
-
     return true
     //todo: searchResult should be shorter than allProducts
     //todo: searchResult should contian bananas.

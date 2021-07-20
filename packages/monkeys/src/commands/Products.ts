@@ -26,20 +26,30 @@ export class SearchProducts extends GetAllProducts {
   }
 }
 
-export class FilterProducts extends GetAllProducts {
+export class FilterCategories extends GetAllProducts {
+  async execute(category: string): Promise<Response> {
+    this.requestPayload = {
+      query: {
+        category: `${encodeURIComponent(category)}`,
+      },
+    }
+    return super.execute()
+  }
+}
+
+export class FilterAttributes extends GetAllProducts {
   async execute({
-    filter,
+    name,
     value,
   }: {
-    filter: string
+    name: string
     value: string
   }): Promise<Response> {
     this.requestPayload = {
       query: {
-        'filter[]': `${filter}=${value}`,
+        attributes: `${name}=${encodeURIComponent(value)}`,
       },
     }
-
     return super.execute()
   }
 }
