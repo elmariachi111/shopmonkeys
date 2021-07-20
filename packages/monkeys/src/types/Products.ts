@@ -18,13 +18,18 @@ export interface ProductAttribute {
 
 export interface ProductOffer {
   product: Product
-  variants: ProductAttribute[]
+  variants?: ProductAttribute[]
   price: number
   decimals: number
   currency: Currency
 }
 
 export enum Currency {
+  EUR = 'EUR',
+  USD = 'USD',
+}
+
+export enum ExCurrency {
   EUR = 'EUR',
   USD = 'USD',
   MKY = 'MKY',

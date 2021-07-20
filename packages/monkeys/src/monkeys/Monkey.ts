@@ -27,6 +27,9 @@ export abstract class Monkey {
     this.initialized = true
   }
 
+  /**
+   * @returns boolean: if true, the monkey has finished its work
+   */
   public async run(): Promise<boolean> {
     if (!this.initialized) await this.initialize()
 

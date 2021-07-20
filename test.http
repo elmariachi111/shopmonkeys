@@ -43,6 +43,8 @@ Content-Type: application/json
   "name": "addproduct"
 }
 
+
+
 ###
 POST http://localhost:9001/services/get-products/routes
 Content-Type: application/json
@@ -55,7 +57,7 @@ Content-Type: application/json
 
 ### invoke
 
-GET http://localhost:9090/products?search=mouse
+GET http://localhost:9090/products?categories=bananas
 apikey: KEVhigwHLMYViPKIhWPCk9c9RHX96JzR
 
 ###
@@ -67,24 +69,6 @@ Content-Type: application/json
   "sku": "KONG-456789"
 }
 
-
-### custom gateway
-
-POST http://localhost:3000/register
-Content-Type: application/json
-
-{
-  "route": "/products",
-  "target": "http://registry.local:8080/function/getProducts"
-}
-POST http://localhost:3000/register
-Content-Type: application/json
-
-{
-  "method": "POST",
-  "route": "/products",
-  "target": "http://registry.local:8080/function/addProduct"
-}
 
 ### DOCKER
 

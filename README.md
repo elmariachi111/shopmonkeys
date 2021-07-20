@@ -169,3 +169,8 @@ CMD [ "node", "index.js" ]
 
 https://www.openfaas.com/blog/stateless-microservices/
 https://blog.alexellis.io/serverless-databases-with-openfaas-and-mongo/
+
+PHP8
+faas template pull https://github.com/cod1ng-earth/faas-templates
+
+https://docs.mongodb.com/php-library/current/tutorial/crud/#insert-one-document
