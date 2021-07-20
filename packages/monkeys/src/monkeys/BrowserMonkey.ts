@@ -24,8 +24,7 @@ export class BrowserMonkey extends Monkey {
     })
   }
 
-  private async searchProducts() {
-    const searchPhrase = 'goldfinger'
+  private async searchProducts(searchPhrase: string) {
     this.currentCommand = new SearchProducts(this)
     const result = await this.currentCommand.execute(searchPhrase)
     this.currentResult = await result.json()
@@ -57,7 +56,10 @@ export class BrowserMonkey extends Monkey {
       res.categories?.includes(category)
     )
 
-    expect(bananas).to.have.length.gt(0)
+    expect(
+      bananas,
+      `failed filtering for category [${category}]`
+    ).to.have.length.gt(0)
     this.log('info', {
       message: `found [${this.currentResult.length}] products for [category]=[${category}]`,
     })
@@ -65,8 +67,8 @@ export class BrowserMonkey extends Monkey {
 
   async doRun(): Promise<boolean> {
     await this.findAllProducts()
-    await this.searchProducts()
-    await this.filterCategory('banana')
+    await this.searchProducts('lacatan')
+    await this.filterCategory('bananas')
 
     return true
     //todo: searchResult should be shorter than allProducts

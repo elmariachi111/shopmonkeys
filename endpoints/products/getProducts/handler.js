@@ -1,33 +1,30 @@
 'use strict'
 const fs = require("fs");
-const mysql = require('mysql2/promise');
+const { MongoClient } = require('mongodb')
 
-  //https://docs.openfaas.com/reference/secrets/
-  const mysqlConnection = fs.readFileSync("/var/openfaas/secrets/mysql-connection", {
-    encoding: "utf-8"
-  });
-
-
+const mongoConnection = fs.readFileSync("/var/openfaas/secrets/mongo-connection", {
+  encoding: "utf-8"
+});
 
 module.exports = async (event, context) => {
+  const client = new MongoClient(mongoConnection)
 
-  const knex = require('knex')({
-    client: 'mysql2',
-    connection: mysqlConnection,
-    pool: { min: 1, max: 2 }
-  });
+  await client.connect();
+  const db = client.db("monkeys");
+  const col = db.collection('products');
 
-  const query = knex.select().from("products").limit(20);
+  const criteria = {};
+
   if (event.query) {
     const { search } = event.query;
     if (search) {
-      query.whereRaw("MATCH title AGAINST (?)", search)      
+      criteria["$text"] ={$search: search};
     }
   }
-  const rows = await query;
-  //const [rows, fields] = await connection.execute("SELECT * FROM products LIMIT 20;");
-  knex.destroy();
 
+  const rows = await col.find(criteria).toArray();
+  await client.close()
+  
   return context
     .headers({
       'Content-Type': 'application/json'

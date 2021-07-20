@@ -25,8 +25,8 @@ export function* MakeBanana(
 ): Generator<Product> {
   const _cultivars = readFileSync(bananaFile, 'utf-8')
   const cultivars: { [group: string]: string[] } = JSON.parse(_cultivars)
-  //const groups = Object.keys(cultivars)
-  const groups = ['AAAB']
+  const groups = Object.keys(cultivars)
+  //const groups = ['AAAB']
 
   const allBananas: Product[] = groups.flatMap((g: string) => {
     return cultivars[g].map(

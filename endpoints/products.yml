@@ -11,6 +11,7 @@ functions:
     image: ${DOCKER_REGISTRY:-registry.local:5000}/stadolf/addproduct:latest
     secrets:
       - mysql-connection
+      - mongo-connection
   getProducts:
     lang: node14
     handler: ./products/getProducts
@@ -18,3 +19,4 @@ functions:
     image: ${DOCKER_REGISTRY:-registry.local:5000}/stadolf/getproducts:latest
     secrets:
       - mysql-connection
+      - mongo-connection
