@@ -4,7 +4,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 13001:8080
+      - 10001:8080
 
   mariadb:
     restart: always
@@ -12,10 +12,36 @@ services:
     ports:
       - '0.0.0.0:13307:3306'
     environment:
-      MARIADB_ROOT_PASSWORD: secretpwd
+      MARIADB_ROOT_PASSWORD: monkey
       MARIADB_DATABASE: monkeys
       MARIADB_USER: monkey
       MARIADB_PASSWORD: monkey
     volumes:
-      - ./mariadb:/var/lib/mysql
+      - ./data/mariadb:/var/lib/mysql
       - ./maria-connections.cnf:/etc/mysql/mariadb.conf.d/70-connections.cnf
+
+  mongo:
+    image: mongo
+    ports:
+      - '27018:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: monkey
+      MONGO_INITDB_ROOT_PASSWORD: monkey
+    volumes:
+      - /mongodb:/data/db
+
+  mongo-express:
+    image: mongo-express
+    environment:
+      #      ME_CONFIG_MONGODB_ADMINUSERNAME: monkey
+      #      ME_CONFIG_MONGODB_ADMINPASSWORD: monkey
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: 'false'
+      ME_CONFIG_MONGODB_AUTH_DATABASE: monkeys
+      ME_CONFIG_MONGODB_AUTH_USERNAME: monkey
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: monkey
+    depends_on:
+      - mongo
+    ports:
+      - 10002:8081

@@ -11,6 +11,7 @@ import { BrowserMonkey } from './src/monkeys/BrowserMonkey'
 import { Monkey } from './src/monkeys/Monkey'
 import { OfferMonkey } from './src/monkeys/OfferMonkey'
 import { ProductMonkey } from './src/monkeys/ProductMonkey'
+import { SquareMonkey } from './src/monkeys/SquareMonkey'
 
 function runInInterval(monkey: Monkey, pingTime = 1000) {
   const intvl = setInterval(async () => {
@@ -70,6 +71,21 @@ yargs
       const monkey = new OfferMonkey({
         interval: 1000,
         category: 'bananas',
+      })
+      await monkey.initialize()
+
+      runInInterval(monkey, 1000)
+    }
+  )
+  .command(
+    'square',
+    'squares numbers',
+    (yargs) => {
+      yargs.option('seed', { type: 'number', alias: 's' })
+    },
+    async (argv) => {
+      const monkey = new SquareMonkey({
+        interval: 2000,
       })
       await monkey.initialize()
 

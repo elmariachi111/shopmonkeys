@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: https://faasd.coding.earth
+functions:
+  square:
+    lang: node14
+    handler: ./square
+    image: ${DOCKER_REGISTRY}/stadolf/square:latest
+
