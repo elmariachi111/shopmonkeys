@@ -1,0 +1,14 @@
+### invoke
+
+GET http://localhost:9090/products?categories=bananas
+apikey: KEVhigwHLMYViPKIhWPCk9c9RHX96JzR
+
+# http://localhost:9090
+###
+POST https://gateway.coding.earth/products
+Content-Type: application/json
+
+{
+  "title": "Handmade Plastic Salad",
+  "sku": "KONG-456789"
+}

@@ -1,0 +1,84 @@
+
+### add services live
+POST https://gateway.coding.earth/admin-api/services/
+Authorization: Basic monkey:monkey
+Content-Type: application/json
+
+{
+  "name": "add-product",
+  "url": "https://faasd.coding.earth/function/addproduct"
+}
+
+### add routes
+POST https://gateway.coding.earth/admin-api/services/add-product/routes
+Authorization: Basic monkey:monkey
+Content-Type: application/json
+
+{
+  "paths": ["/products"],
+  "methods": ["POST"],
+  "name": "add-product"
+}
+
+
+###
+POST http://registry.coding.earth:9091/admin-api/services 
+Authorization: Basic monkey:monkey
+Content-Type: application/json
+
+{
+  "name": "konga",
+  "host": "127.0.0.1",
+  "port": 9099
+}
+
+###
+POST http://registry.coding.earth:9091/admin-api/services/konga/routes
+Authorization: Basic monkey:monkey
+Content-Type: application/json
+
+{
+  "paths": ["/konga"]
+}
+
+
+
+### local
+
+### add service
+POST http://localhost:9001/services/
+Content-Type: application/json
+
+{
+  "name": "get-products",
+  "url": "http://registry.local:8080/function/getProducts"
+}
+
+###
+POST http://localhost:9001/services/
+Content-Type: application/json
+
+{
+  "name": "add-product",
+  "url": "http://registry.local:8080/function/addProduct"
+}
+
+### add routes
+POST http://localhost:9001/services/add-product/routes
+Content-Type: application/json
+
+{
+  "paths": ["/products"],
+  "methods": ["POST"],
+  "name": "addproduct"
+}
+
+###
+POST http://localhost:9001/services/get-products/routes
+Content-Type: application/json
+
+{
+  "paths": ["/products"],
+  "methods": ["GET"],
+  "name": "getproducts"
+}

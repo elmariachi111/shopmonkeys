@@ -1,0 +1,33 @@
+### FAASD
+
+GET http://registry.coding.earth:8080
+Authorization: Basic monkey:monkey
+
+### KONG
+
+### ping
+GET http://localhost:9091/
+
+###
+GET https://gateway.coding.earth/admin-api
+Authorization: Basic monkey:monkey
+
+
+###
+
+POST http://registry.coding.earth:9092/services 
+Content-Type: application/json
+
+{
+  "name": "admin-api",
+  "host": "127.0.0.1",
+  "port": 8001
+}
+
+###
+POST http://registry.coding.earth:9092/services/admin-api/routes
+Content-Type: application/json
+
+{
+  "paths": ["/admin-api"]
+}

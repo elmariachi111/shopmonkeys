@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  #gateway: https://faasd.coding.earth
+functions:
+  testmongo:
+    lang: node14
+    handler: ./testmongo
+    image: ${DOCKER_REGISTRY}/stadolf/testmongo:latest
+    secrets:
+      - mongo-connection
+      - mysql-connection

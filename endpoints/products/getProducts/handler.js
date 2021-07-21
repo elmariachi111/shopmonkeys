@@ -34,7 +34,7 @@ module.exports = async (event, context) => {
 
   console.log(criteria);
   
-  const rows = await col.find(criteria).toArray();
+  const rows = await col.find(criteria).limit(20).toArray();
   await client.close()
   
   return context

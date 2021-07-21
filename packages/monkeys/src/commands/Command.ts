@@ -1,7 +1,8 @@
 import { Monkey } from '../monkeys/Monkey'
 import { Response, default as fetch } from 'node-fetch'
 
-export const API_GATEWAY = 'http://localhost:9090'
+//export const API_GATEWAY = 'http://localhost:9090'
+export const API_GATEWAY = 'https://gateway.coding.earth'
 
 export interface CommandRequestPayload {
   query?: Record<string, string>
