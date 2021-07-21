@@ -199,9 +199,38 @@ module.exports = async (event, context) => {
 }
 ```
 
-### Testing a container locally
+### Testing a function locally
+since functions are simply shipped as docker images you can simply run them on your own machine
 
- 
+`docker run -p "3000:8080" --rm --name reverse registry.coding.earth/stadolf/reverse:latest`
+`curl -X POST http://localhost:3000 -d "reverse this"`
+
+### Some more helpful insights & advanced topics
+
+OpenFaaS docs: https://docs.openfaas.com/
+
+The OpenFaaS workshop: https://github.com/openfaas/workshop/
+
+Functions: https://docs.openfaas.com/cli/templates/#create-new-functions
+
+The stack YML reference: https://docs.openfaas.com/reference/yaml/ (multiple functions in one stack
+
+You can run any docker container, actually:
+https://docs.openfaas.com/reference/workloads/#running-an-existing-docker-image-on-openfaas
+
+how OpenFaas container setup looks under the hood:
+https://github.com/openfaas/of-watchdog
+
+Functions triggered by Kafka are a commercial feature but RabbitMQ, NATS and MQTT are supported:
+https://docs.openfaas.com/reference/triggers/#other-event-sources
+
+
+### ok, I'm done with OpenFaaS, what other options do I have?
+
+ngrok, ftw! https://dashboard.ngrok.com/get-started/setup
+
+Google Cloud Run: 
+(it's even compatible to OpenFaaS watchdog based containers: https://www.openfaas.com/blog/openfaas-cloudrun/)
  
  ### Call one function from another
 https://github.com/openfaas/workshop/blob/master/lab4.md#call-one-function-from-another
