@@ -43,7 +43,7 @@ class Handler
 }
 ```
 take note of the stack file (reverse.yml):
-```
+```yml
 version: 1.0
 provider:
   name: openfaas
@@ -103,7 +103,7 @@ Content-Type: application/json
 }
 ```
 
-3rd: try it out
+3rd: try it out (note that there's no auth needed!)
 ```rest
 POST https://gateway.coding.earth/reverse
 Content-Type: application/json
@@ -111,9 +111,95 @@ Content-Type: application/json
 this will be reversed.
 ```
 
+### Check incoming monkey traffic
 
+Monkeys issue requests to the gateway. They're reporting all requests and their results to Loki / Grafana:
 
+https://grafana.coding.earth/login
+admin:monkey
 
+Explore > Loki > Log Query {app="monkey-runner"}, filter by log level, adjust the filtered timerange
+or watch that log dashboard:
+https://grafana.coding.earth/d/u-qOmHWnz/monkey-logs?orgId=1
+
+### Connect to databases
+
+Warning: we haven't setup fancy connection pooling or other measures to save our dbs from draining connections. If you're opening a connection, make sure to close it at the end of the function, please.
+
+We've set up 2 databases for you, these are their frontends:
+
+MariaDB
+https://mariadb.coding.earth/
+server: mariadb
+user: monkey
+pass: monkey
+database: monkeys
+
+MongoDB
+https://mongo.coding.earth/
+monkey:monkey
+
+#### Access dbs from your code
+
+The connection URLs are only dialable from within the faasd function gateway and not from your computer:
+
+Rather consider to use them as configured secrets, instead (faas secret list). Faas is mounting all secrets a function requires at `/var/openfaas/secrets/` in its container. You can read it as a real file. A function must define the secrets it needs in its configuration:
+
+testdbs.yml
+```
+version: 1.0
+provider:
+  name: openfaas
+  gateway: https://faasd.coding.earth
+functions:
+  testdbs:
+    lang: node14
+    handler: ./testdbs
+    image: testmongo:latest
+    secrets:
+      - mongo-connection
+      - mysql-connection
+```
+
+here's a node example:
+
+```js
+'use strict'
+const fs = require("fs");
+const { MongoClient } = require('mongodb')
+const mysql = require('mysql2/promise');
+
+const mongoConnection = fs.readFileSync("/var/openfaas/secrets/mongo-connection", {
+  encoding: "utf-8"
+})
+
+const mysqlConnection = fs.readFileSync("/var/openfaas/secrets/mysql-connection", {
+  encoding: "utf-8"
+});
+
+module.exports = async (event, context) => {
+
+  //mongo
+  const client = new MongoClient(mongoConnection)
+  await client.connect();
+  const db = client.db("monkeys");
+  const col = await db.collection('products');
+  await col.insertOne({foo: "bar"});
+  await client.close()
+  
+  //mysql
+  const myc = await mysql.createConnection(mysqlConnection);
+  const statement = await myc.prepare("INSERT INTO foo (foo, bar) VALUES (?, ?);");
+  const [result] = await statement.execute([2, 3]);
+  await myc.end(); 
+
+  return context
+    .status(200)
+    .succeed(result)
+}
+```
+
+### Testing a container locally
 
  
  
