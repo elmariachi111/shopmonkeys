@@ -12,3 +12,12 @@ Content-Type: application/json
   "title": "Handmade Plastic Salad",
   "sku": "KONG-456789"
 }
+
+###
+
+POST https://gateway.coding.earth/square
+Content-Type: application/json
+
+{
+  "num":4
+}

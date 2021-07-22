@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+require('dotenv-flow').config()
+
 import { system } from 'faker'
 import yargs from 'yargs'
 import { logger } from './src/lib/Logger'
@@ -47,7 +50,7 @@ yargs
         amount: (argv.amount || 10) as number,
       })
       await monkey.initialize()
-      runInInterval(monkey, 100)
+      runInInterval(monkey)
     }
   )
   .command(
@@ -56,9 +59,9 @@ yargs
     (yargs) => {},
     (argv) => {
       const monkey = new BrowserMonkey({
-        interval: 2000,
+        interval: 5000,
       })
-      runInInterval(monkey, 1000)
+      runInInterval(monkey)
     }
   )
   .command(
@@ -69,12 +72,12 @@ yargs
     },
     async (argv) => {
       const monkey = new OfferMonkey({
-        interval: 1000,
+        interval: 5000,
         category: 'bananas',
       })
       await monkey.initialize()
 
-      runInInterval(monkey, 1000)
+      runInInterval(monkey)
     }
   )
   .command(
@@ -89,7 +92,7 @@ yargs
       })
       await monkey.initialize()
 
-      runInInterval(monkey, 1000)
+      runInInterval(monkey)
     }
   )
 

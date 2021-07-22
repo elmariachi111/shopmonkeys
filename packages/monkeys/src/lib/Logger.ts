@@ -2,7 +2,7 @@ import { default as winston } from 'winston'
 import { default as LokiTransport } from 'winston-loki'
 
 //const LOKI_ENDPOINT="http://127.0.0.1:3100";
-const LOKI_ENDPOINT = 'http://registry.coding.earth:3100'
+//'http://registry.coding.earth:3100'
 
 const logger = winston.createLogger({
   transports: [
@@ -17,7 +17,7 @@ const logger = winston.createLogger({
     }),
     new LokiTransport({
       format: winston.format.json(),
-      host: LOKI_ENDPOINT,
+      host: process.env.LOKI_ENDPOINT as string,
       interval: 1,
       labels: {
         app: 'monkey-runner',

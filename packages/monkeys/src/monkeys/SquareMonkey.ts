@@ -23,7 +23,7 @@ export class SquareMonkey extends Monkey {
 
   async doRun(): Promise<boolean> {
     this.currentCommand = new SquareCommand(this)
-    const num = faker.datatype.number(50)
+    const num = faker.datatype.number({ min: 3, max: 50 })
     let result = await this.currentCommand.execute(num)
 
     this.currentResult = await result.json()

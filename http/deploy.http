@@ -5,6 +5,29 @@ Authorization: Basic monkey:monkey
 Content-Type: application/json
 
 {
+  "name": "square",
+  "url": "https://faasd.coding.earth/function/square"
+}
+
+### add routes
+POST https://gateway.coding.earth/admin-api/services/square/routes
+Authorization: Basic monkey:monkey
+Content-Type: application/json
+
+{
+  "paths": ["/square"],
+  "methods": ["POST"],
+  "name": "square"
+}
+
+
+
+### add services live
+POST https://gateway.coding.earth/admin-api/services/
+Authorization: Basic monkey:monkey
+Content-Type: application/json
+
+{
   "name": "add-product",
   "url": "https://faasd.coding.earth/function/addproduct"
 }
@@ -40,7 +63,6 @@ Content-Type: application/json
 {
   "paths": ["/konga"]
 }
-
 
 
 ### local

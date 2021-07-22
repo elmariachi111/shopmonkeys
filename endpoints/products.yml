@@ -5,14 +5,14 @@ functions:
   addproduct:
     lang: node14
     handler: ./products/addProduct
-    image: ${DOCKER_REGISTRY}/stadolf/addproduct:latest
+    image: ${OPENFAAS_PREFIX}/addproduct:latest
     secrets:
       - mysql-connection
       - mongo-connection
   getproducts:
     lang: node14
     handler: ./products/getProducts
-    image: ${DOCKER_REGISTRY}/stadolf/getproducts:latest
+    image: ${OPENFAAS_PREFIX}/getproducts:latest
     secrets:
       - mysql-connection
       - mongo-connection
